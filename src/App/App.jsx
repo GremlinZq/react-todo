@@ -13,6 +13,7 @@ export default class App extends Component {
 			{ id: 2, value: 'learn react docs', active: false },
 			{ id: 3, value: 'build awesome app', active: false },
 		]
+
 	}
 
 	render() {
@@ -40,11 +41,11 @@ export default class App extends Component {
 	}
 
 
-	addTodoItem = text => {
-		this.setState(({ todos }) => {
-			return {
-				todos: [...todos, { id: 4, value: text, active: false } ]
-			}
-		});
-	}
+	// addTodoItem = text => {
+	// 	this.setState(({ todos }) => {
+	// 		return {
+	// 			todos: [...todos, { id: 4, value: text, active: false } ]
+	// 		}
+	// 	});
+	// }
 }
