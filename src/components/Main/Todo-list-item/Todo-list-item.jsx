@@ -3,20 +3,15 @@ import './Todo-list-item.css';
 
 export default class TodoListItem extends Component {
 
-	state = {
-		completed: false,
-	}
-
 	render() {
+		const { value, id, done, onToggleDone, removeTodoItem } = this.props;
 
-		const { value, id, removeTodoItem } = this.props;
-		const { completed } = this.state;
 		return (
-			<li id={id} className={completed ? 'completed' : null}>
+			<li id={id} className={done ? 'completed' : null}>
 				<div className="view">
 					<input className="toggle" type="checkbox" />
 					<label>
-						<span className='description' onClick={this.performTodo}>{value}</span>
+						<span className='description' onClick={() => onToggleDone(id)}>{value}</span>
 						<span className="created">time</span>
 					</label>
 
@@ -25,14 +20,5 @@ export default class TodoListItem extends Component {
 				</div>
 			</li>
 		)
-	}
-
-
-	performTodo = () => {
-		this.setState(( {completed})  => {
-			return {
-				completed: !completed
-			}
-		})
 	}
 }
