@@ -1,10 +1,11 @@
 import { Component } from 'react';
 import './Todo-list-item.css';
 
-export default class TodoListItem extends Component {
+export default class TodoListItem extends  Component {
 
-	render() {
-		const { value, id, done, onToggleDone, removeTodoItem } = this.props;
+	render () {
+
+		const { value, id, done, createdTodo, onToggleDone, removeTodoItem } = this.props;
 
 		return (
 			<li id={id} className={done ? 'completed' : null}>
@@ -12,7 +13,7 @@ export default class TodoListItem extends Component {
 					<input className="toggle" type="checkbox" />
 					<label>
 						<span className='description' onClick={() => onToggleDone(id)}>{value}</span>
-						<span className="created">time</span>
+						<span className="created">{createdTodo}</span>
 					</label>
 
 					<button className="icon icon-edit"></button>

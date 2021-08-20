@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 import Header from  '../components/Header';
 import Main from '../components/Main';
+
 
 import './App.css';
 
 export default class App extends Component {
 
+	interval = null;
+
 	state = {
 		todos : [
-			{ id: 1, value: 'drink coffe', done: false },
-			{ id: 2, value: 'learn react docs', done: false },
-			{ id: 3, value: 'build awesome app', done: false },
+			{ id: 1, value: 'drink coffe', done: false, date: Date.now(), createdTodo: null  },
+			{ id: 2, value: 'learn react docs', done: false, date: Date.now(), createdTodo: null },
+			{ id: 3, value: 'build awesome app', done: false, date: Date.now(), createdTodo: null },
 		],
 		userText: '',
 	}
@@ -40,6 +44,29 @@ export default class App extends Component {
 	}
 
 	/* ----------------------------------- BLL ---------------------------------- */
+	componentDidMount() {
+		this.setState(({ todos }) => ({
+			todos: todos.map((elem) => ({
+			...elem,
+			createdTodo: formatDistanceToNow(elem.date, { addSuffix: true,includeSeconds: true }),
+		  })),
+		}));
+
+		this.interval = setInterval(() => {
+		  this.setState(({ todos }) => ({
+			todos: todos.map((elem) => ({
+			  ...elem,
+			  createdTodo: formatDistanceToNow(elem.date, { includeSeconds: true, addSuffix: true }),
+			})),
+		  }));
+		}, 5000);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
+	}
+
+
 	removeTodoItem = id => {
 		this.setState(({ todos }) => {
 			const index = todos.findIndex(todo => todo.id === id );
@@ -58,7 +85,7 @@ export default class App extends Component {
 		if (event.code === 'Enter') {
 			this.setState(({ todos }) => {
 				return {
-					todos: [...todos, { id: Math.random() * 100, value: this.state.userText, done: false } ]
+					todos: [...todos, { id: Math.random() * 100, value: this.state.userText, done: false, date: Date.now(), createdTodo: null } ]
 				}
 			});
 
