@@ -18,30 +18,6 @@ export default class App extends Component {
 		],
 		userText: '',
 	}
-	/* ----------------------------------- UI ----------------------------------- */
-	render() {
-		const { todos } = this.state;
-
-		const active = this.state.todos.filter(todo => !todo.done);
-		const completed = this.state.todos.filter(todo => todo.done);
-
-		return (
-			<section className="todoapp">
-				<Header addTodoItem={this.addTodoItem}
-						onChangeText={this.onChangeText}
-						userText={this.state.userText}
-				/>
-				<Main
-					todos={ todos }
-					removeTodoItem={this.removeTodoItem}
-					onToggleDone={this.onToggleDone}
-					activeTodos={active}
-					completedTodos={completed}
-					clearCompleted={this.clearCompleted}
-				/>
-			</section>
-		)
-	}
 
 	/* ----------------------------------- BLL ---------------------------------- */
 	componentDidMount() {
@@ -83,9 +59,9 @@ export default class App extends Component {
 
 	addTodoItem = event => {
 		if (event.code === 'Enter') {
-			this.setState(({ todos }) => {
+			this.setState(({ todos, userText }) => {
 				return {
-					todos: [...todos, { id: Math.random() * 100, value: this.state.userText, done: false, date: Date.now(), createdTodo: null } ]
+					todos: [...todos, { id: Math.random() * 100, value: userText, done: false, date: Date.now(), createdTodo: null } ]
 				}
 			});
 
@@ -99,7 +75,7 @@ export default class App extends Component {
 
 	onToggleDone = id => {
 		this.setState(({todos}) => {
-			const index = this.state.todos.findIndex(todo => todo.id === id);
+			const index = todos.findIndex(todo => todo.id === id);
 
 			const oldTodo = todos[index];
 
@@ -119,4 +95,30 @@ export default class App extends Component {
 	}
 
 	clearCompleted = () => this.setState({todos: []})
+
+
+	/* ----------------------------------- UI ----------------------------------- */
+	render() {
+		const { todos, userText } = this.state;
+
+		const active = todos.filter(todo => !todo.done);
+		const completed = todos.filter(todo => todo.done);
+
+		return (
+			<section className="todoapp">
+				<Header addTodoItem={this.addTodoItem}
+						onChangeText={this.onChangeText}
+						userText={userText}
+				/>
+				<Main
+					todos={ todos }
+					removeTodoItem={this.removeTodoItem}
+					onToggleDone={this.onToggleDone}
+					activeTodos={active}
+					completedTodos={completed}
+					clearCompleted={this.clearCompleted}
+				/>
+			</section>
+		)
+	}
 }

@@ -1,25 +1,39 @@
-import React from 'react';
-import { Component } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types';
 
 import './Header.css';
 
-export default class Header extends Component {
 
-	render() {
-		const { userText, onChangeText, addTodoItem } = this.props;
+const Header = props => {
 
-		return (
-			<div className='header'>
-				<h1>todos</h1>
+	const { userText, onChangeText, addTodoItem } = props;
 
-				<input className="new-todo"
-					placeholder="What needs to be done?"
-					onChange={onChangeText}
-					onKeyDown={event => addTodoItem(event)}
-					value={userText}
-					autoFocus
-				/>
-			</div>
-		);
-	}
+	return (
+		<div className='header'>
+			<h1>todos</h1>
+
+			<input className="new-todo"
+				placeholder="What needs to be done?"
+				onChange={onChangeText}
+				onKeyDown={event => addTodoItem(event)}
+				value={userText}
+			/>
+		</div>
+	);
+
 }
+
+Header.defaultProps = {
+	userText: '',
+	onChangeText: () => {},
+	addTodoItem: () => {},
+}
+
+Header.propTypes = {
+	userText: PropTypes.string,
+	onChangeText: PropTypes.func,
+	addTodoItem: PropTypes.func,
+}
+
+
+export default Header;

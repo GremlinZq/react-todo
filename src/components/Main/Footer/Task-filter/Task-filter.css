@@ -19,7 +19,7 @@
 	cursor: default;
 }
 
-.filters li button {
+.filters li button a {
 	display: inline-block;
 	color: inherit;
 	margin: 3px;
@@ -33,7 +33,7 @@
 	cursor: pointer;
 }
 
-.filters li:hover button {
+.filters li:hover button a {
 	border-color: rgba(175, 47, 47, 0.1);
 }
 
