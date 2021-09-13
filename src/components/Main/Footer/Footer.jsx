@@ -5,7 +5,6 @@ import TaskFilter from './Task-filter';
 import ClearCompleted from './Clear-completed';
 
 const Footer = props => {
-
 	const { todos, clearCompleted } = props;
 
 	return (
