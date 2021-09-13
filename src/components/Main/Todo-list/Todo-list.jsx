@@ -2,22 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TodoListItem from '../Todo-list-item';
 
-
 const TodoList = props => {
 
-	const { todos, onToggleDone, removeTodoItem } = props;
+	const { todos, markAsDone, removeTodoItem } = props;
 
-	const TaskItems = todos.map( ({id, value, done, createdTodo}) =>  {
-		return (
-			<TodoListItem key={id}
-						  id={id}
-						  value={value}
-						  onToggleDone={onToggleDone}
-						  done={done} createdTodo={createdTodo}
-						  removeTodoItem={removeTodoItem}
-			/>
-		)
-	})
+	const TaskItems = todos.map(({id, ...rest}) => {
+		return <TodoListItem key={id} rest={rest} id={id} markAsDone={markAsDone} removeTodoItem={removeTodoItem} />
+	});
 
 	return (
 		<ul className='todo-list'>
@@ -29,14 +20,12 @@ const TodoList = props => {
 
 TodoList.defaultProps = {
 	todos: [],
-	onToggleDone: () => {},
-	removeTodoItem: () => {}
 }
 
 TodoList.propTypes = {
 	todos: PropTypes.arrayOf(PropTypes.object),
-	onToggleDone: PropTypes.func,
-	removeTodoItem: PropTypes.func
+	markAsDone: PropTypes.func.isRequired,
+	removeTodoItem: PropTypes.func.isRequired,
 }
 
 export default TodoList;

@@ -6,38 +6,52 @@ import Footer from './Footer';
 import './Main.css';
 
 const Main = props => {
-	const { todos, activeTodos, clearCompleted, completedTodos, onToggleDone, removeTodoItem } = props;
+	const { todos, markAsDone,removeTodoItem, clearCompleted } = props;
+
+	const todosActive = todos.filter(todo => !todo.done)
+	const todosCompleted = todos.filter(todo => todo.done)
 
 	return (
 		<section className='main'>
 			<Router>
 				<Switch>
-					<Route path='/all' component={ () => <TodoList todos={todos} removeTodoItem={removeTodoItem} onToggleDone={onToggleDone} /> }/>
-					<Route path='/active' component={ () => <TodoList todos={activeTodos} removeTodoItem={removeTodoItem} onToggleDone={onToggleDone}/> }/>
-					<Route path='/completed' component={ () => <TodoList todos={completedTodos} removeTodoItem={removeTodoItem} onToggleDone={onToggleDone} /> }/>
+					<Route exact path='/' render={() => {
+						return <TodoList todos={todos}  markAsDone={markAsDone} removeTodoItem={removeTodoItem} />;
+					}} />
+					<Route path='/all' render={() => {
+						return <TodoList todos={todos}   markAsDone={markAsDone} removeTodoItem={removeTodoItem}  />;
+					}} />
+					<Route path='/active' render={() => {
+						return <TodoList todos={todosActive}  markAsDone={markAsDone} removeTodoItem={removeTodoItem} />;
+					}} />
+					<Route path='/completed'  render={() => {
+						return <TodoList todos={todosCompleted} markAsDone={markAsDone}  removeTodoItem={removeTodoItem} />;
+					}} />
 				</Switch>
-				<Footer todos={activeTodos} clearCompleted={clearCompleted}/>
+				<Footer todos={todos} clearCompleted={clearCompleted} />
 			</Router>
 		</section>
 	);
-}
+};
+
 
 Main.defaultProps = {
 	todos: [],
-	activeTodos: [],
-	completedTodos: [],
-	clearCompleted: () => {},
-	onToggleDone: () => {},
-	removeTodoItem: () => {}
 }
 
 Main.propTypes = {
-	todos: PropTypes.arrayOf(PropTypes.object),
-	activeTodos: PropTypes.arrayOf(PropTypes.object),
-	clearCompleted: PropTypes.func,
-	completedTodos: PropTypes.arrayOf(PropTypes.object),
-	onToggleDone: PropTypes.func,
-	removeTodoItem: PropTypes.func
+	todos: PropTypes.arrayOf(PropTypes.shape({
+		id: PropTypes.number,
+		value: PropTypes.string,
+		done: PropTypes.bool,
+		date: PropTypes.number,
+		deadLine: PropTypes.objectOf(PropTypes.number),
+		createdTodo: PropTypes.string,
+		filter: PropTypes.func,
+	})),
+	markAsDone: PropTypes.func.isRequired,
+	clearCompleted: PropTypes.func.isRequired,
+	removeTodoItem: PropTypes.func.isRequired,
 }
 
 export default Main;

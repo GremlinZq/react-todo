@@ -1,39 +1,48 @@
-import React from 'react'
+import React from 'react';
+import './Header.css';
 import PropTypes from 'prop-types';
 
-import './Header.css';
-
-
 const Header = props => {
-
-	const { userText, onChangeText, addTodoItem } = props;
+	const {
+		setUserText, setUserMinutes,
+		setUserSeconds, createTodoItem,
+		text, minutes, seconds,
+	} = props;
 
 	return (
 		<div className='header'>
 			<h1>todos</h1>
 
-			<input className="new-todo"
-				placeholder="What needs to be done?"
-				onChange={onChangeText}
-				onKeyDown={event => addTodoItem(event)}
-				value={userText}
-			/>
+			<form className='new-todo-form' role='presentation'
+				  onKeyDown={event => createTodoItem(event)}>
+				<input className='new-todo'
+					   placeholder='What needs to be done?'
+					   onChange={event => setUserText(event.target.value)}
+					   value={!text ? '' : text}
+				/>
+				<input className='new-todo-form__timer'
+					   placeholder='Min'
+					   onChange={event => setUserMinutes(+event.target.value)}
+					   value={!minutes ? '' : minutes}
+				/>
+				<input className='new-todo-form__timer'
+					   placeholder='Sec'
+					   onChange={event => setUserSeconds(+event.target.value)}
+					   value={!seconds ? '' : seconds}
+				/>
+			</form>
 		</div>
 	);
-
-}
-
-Header.defaultProps = {
-	userText: '',
-	onChangeText: () => {},
-	addTodoItem: () => {},
-}
+};
 
 Header.propTypes = {
-	userText: PropTypes.string,
-	onChangeText: PropTypes.func,
-	addTodoItem: PropTypes.func,
-}
-
+	text: PropTypes.string.isRequired,
+	minutes: PropTypes.number.isRequired,
+	seconds: PropTypes.number.isRequired,
+	setUserText: PropTypes.func.isRequired,
+	setUserMinutes: PropTypes.func.isRequired,
+	setUserSeconds: PropTypes.func.isRequired,
+	createTodoItem: PropTypes.func.isRequired,
+};
 
 export default Header;
