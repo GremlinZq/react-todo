@@ -5,6 +5,7 @@ const SET_MINUTES = 'app/SET_MINUTES';
 const SET_SECONDS = 'app/SET_SECONDS';
 const MARK_AS_DONE = 'app/MARK_AS_DONE';
 const CLEAR_COMPLETED = 'app/CLEAR_COMPLETED';
+const SET_UPDATE_DEADLINE = 'app/SET_UPDATE_DEADLINE';
 
 const initialState = {
 	todos: [
@@ -14,7 +15,6 @@ const initialState = {
 			done: false,
 			date: Date.now(),
 			deadLine: { minutes: 30, seconds: 0 },
-			createdTodo: null,
 		},
 		{
 			id: 2,
@@ -22,7 +22,6 @@ const initialState = {
 			done: false,
 			date: Date.now(),
 			deadLine: { minutes: 30, seconds: 0 },
-			createdTodo: null,
 		},
 		{
 			id: 3,
@@ -30,12 +29,8 @@ const initialState = {
 			done: false,
 			date: Date.now(),
 			deadLine: { minutes: 30, seconds: 0 },
-			createdTodo: null,
 		},
 	],
-	text: '',
-	minutes: 0,
-	seconds: 0,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -57,23 +52,26 @@ const appReducer = (state = initialState, action) => {
 			};
 		case CREATE_TODO_ITEM:
 			if (action.event.code === 'Enter') {
+
+				action.setText('');
+				action.setMinutes(0);
+				action.setSeconds(0);
+
 				return {
 					...state,
 					todos: [...state.todos, {
 						id: Math.random() * 100,
-						value: state.text,
+						value: action.text,
 						done: false,
 						date: Date.now(),
 						deadLine: {
-							minutes: !state.minutes ? 30 : state.minutes,
-							seconds: !state.seconds ? 0 : state.seconds,
+							minutes: action.minutes,
+							seconds: action.seconds,
 						},
 					}],
-					text: '',
-					minutes: 0,
-					seconds: 0,
 				};
 			}
+
 			return state;
 		case REMOVE_TODO_ITEM: {
 			const idx = state.todos.findIndex(todo => todo.id === action.id);
@@ -82,9 +80,9 @@ const appReducer = (state = initialState, action) => {
 				...state,
 				todos: [
 					...state.todos.slice(0, idx),
-					...state.todos.slice(idx + 1)
-				]
-			}
+					...state.todos.slice(idx + 1),
+				],
+			};
 		}
 
 		case MARK_AS_DONE:
@@ -103,19 +101,38 @@ const appReducer = (state = initialState, action) => {
 		case CLEAR_COMPLETED:
 			return {
 				...state,
-				todos: state.todos.filter(todo => !todo.done)
-			}
+				todos: state.todos.filter(todo => !todo.done),
+			};
+		case SET_UPDATE_DEADLINE:
+			return {
+				...state,
+				todos: state.todos.map(todo => {
+					if (todo.id === action.id) {
+						return {
+							...todo,
+							deadLine: {
+								...todo.deadLine,
+								minutes: action.minutes,
+								seconds: action.seconds,
+							},
+						};
+					}
+					return todo;
+				}),
+			};
+
 		default:
 			return state;
 	}
 };
 
-export const setUserText = text => ({ type: SET_TEXT, text });
-export const setUserMinutes = minutes => ({ type: SET_MINUTES, minutes });
-export const setUserSeconds = seconds => ({ type: SET_SECONDS, seconds });
-export const createTodoItem = event => ({ type: CREATE_TODO_ITEM, event });
-export const removeTodoItem = id => ({type: REMOVE_TODO_ITEM, id})
+
+export const createTodoItem = (event, text, minutes, seconds, setText, setMinutes, setSeconds) => (
+	{ type: CREATE_TODO_ITEM, event, text, minutes, seconds, setText, setMinutes, setSeconds }
+);
+export const removeTodoItem = id => ({ type: REMOVE_TODO_ITEM, id });
 export const markAsDone = id => ({ type: MARK_AS_DONE, id });
 export const clearCompleted = () => ({ type: CLEAR_COMPLETED });
+export const setUpdateDeadline = (id, minutes, seconds) => ({ type: SET_UPDATE_DEADLINE, id, minutes, seconds });
 
 export default appReducer;
