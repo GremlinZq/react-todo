@@ -1,5 +1,5 @@
 import React from 'react';
-import HeaderContainer from '../components/Header/HeaderContainer';
+import Header from '../components/Header';
 import MainContainer from '../components/Main/MainContainer';
 import './App.css';
 
@@ -7,7 +7,7 @@ const App = () => {
 
 	return (
 		<section className='todoapp'>
-			<HeaderContainer />
+			<Header />
 			<MainContainer />
 		</section>
 	);

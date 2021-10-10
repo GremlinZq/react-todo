@@ -1,34 +1,38 @@
-import React from 'react';
-import './Header.css';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createTodoItem } from '../../redux/reducers/app-reducer';
+import './Header.css';
 
 const Header = props => {
-	const {
-		setUserText, setUserMinutes,
-		setUserSeconds, createTodoItem,
-		text, minutes, seconds,
-	} = props;
+	const { createTodoItem } = props;
+
+	const [text, setText] = useState('');
+	const [minutes, setMinutes] = useState(0);
+	const [seconds, setSeconds] = useState(0);
 
 	return (
 		<div className='header'>
 			<h1>todos</h1>
 
-			<form className='new-todo-form' role='presentation'
-				  onKeyDown={event => createTodoItem(event)}>
+			<form className='new-todo-form'
+				  role='presentation'
+				  onKeyDown={event => createTodoItem(event, text, minutes, seconds, setText, setMinutes, setSeconds)}
+			>
 				<input className='new-todo'
 					   placeholder='What needs to be done?'
-					   onChange={event => setUserText(event.target.value)}
-					   value={!text ? '' : text}
+					   onChange={event => setText(event.target.value)}
+					   value={text}
 				/>
 				<input className='new-todo-form__timer'
 					   placeholder='Min'
-					   onChange={event => setUserMinutes(+event.target.value)}
-					   value={!minutes ? '' : minutes}
+					   onChange={event => setMinutes(+event.target.value)}
+					   value={minutes || ''}
 				/>
 				<input className='new-todo-form__timer'
 					   placeholder='Sec'
-					   onChange={event => setUserSeconds(+event.target.value)}
-					   value={!seconds ? '' : seconds}
+					   onChange={event => setSeconds(+event.target.value)}
+					   value={seconds || '' }
 				/>
 			</form>
 		</div>
@@ -36,13 +40,9 @@ const Header = props => {
 };
 
 Header.propTypes = {
-	text: PropTypes.string.isRequired,
-	minutes: PropTypes.number.isRequired,
-	seconds: PropTypes.number.isRequired,
-	setUserText: PropTypes.func.isRequired,
-	setUserMinutes: PropTypes.func.isRequired,
-	setUserSeconds: PropTypes.func.isRequired,
 	createTodoItem: PropTypes.func.isRequired,
 };
 
-export default Header;
+const mapStateToProps = () => ({})
+
+export default connect(mapStateToProps, {createTodoItem})(Header);
