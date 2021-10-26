@@ -1,0 +1,6 @@
+export const CREATE_TODO_ITEM = 'app/CREATE_TODO_ITEM';
+export const REMOVE_TODO_ITEM = 'app/REMOVE_TODO_ITEM';
+export const MARK_AS_DONE = 'app/MARK_AS_DONE';
+export const CLEAR_COMPLETED = 'app/CLEAR_COMPLETED';
+export const SET_UPDATE_DEADLINE = 'app/SET_UPDATE_DEADLINE';
+export const EDIT_VALUE_TODOS_ITEM = 'app/EDIT_VALUE_TODOS_ITEM'
