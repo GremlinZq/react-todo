@@ -63,6 +63,7 @@
 		"react/jsx-props-no-spreading": [
 			"off"
 		],
+		"@typescript-eslint/explicit-module-boundary-types": "off",
 		"react/static-property-placement": "off",
 		"@typescript-eslint/indent": "off",
 		"@typescript-eslint/object-curly-spacing": "off",
