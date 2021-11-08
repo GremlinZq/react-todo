@@ -35,7 +35,7 @@ const appReducer = (state = initialState, action: ActionsType): InitialStateType
           done: false,
           date: Date.now(),
           deadLine: {
-            minutes: !action.minutes && !action.seconds ? 30 : action.minutes,
+            minutes:  action.minutes === 0 && action.seconds === 0 ? 30 : action.minutes,
             seconds: !action.seconds ? 0 : action.seconds,
           },
         }] as Array<TodosType>,
